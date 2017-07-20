@@ -77,6 +77,10 @@ function addInv() {
 		  type: 'input'
 		} 
 	]).then( (data) => {
+
+		var addQty = parseInt(data.addQty);
+		var addId = data.addId;
+
 		connection.queryAsync("SELECT * FROM products").then( data => {
 			item = data.map( item => {
 				return {
@@ -86,17 +90,19 @@ function addInv() {
 					price : item.price,
 					stock: item.stock_qty
 				}
+			});
+
+			// console.log("NOW:" + item[addId-1].stock);
+			// console.log("ADD:" + addQty);
+
+			var stock = item[addId-1].stock;
+			var newStockQty = addQty + stock;
+
+			connection.queryAsync("UPDATE products SET stock_qty = ? WHERE item_id = ?", [newStockQty, addId]).then( () => {
+				console.log("Item #" + addId + " has been updated to qty " + newStockQty + ".");
+				connection.end();
 			})
 		})
-
-		var stock = item[addId-1].stock;
-		var newStockQty = data.addQty + stock;
-
-		connection.queryAsync("UPDATE products SET stock_qty = ? WHERE item_id = ?", [newStockQty, data.addId])
-		console.log("Item #" + data.addId + " has been updated to qty " + newStockQty + ".");
-
-	}).then( () => {
-		connection.end();
 	})
 	.catch( err => { throw err });
 }
