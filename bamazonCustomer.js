@@ -53,7 +53,7 @@ connection.queryAsync("SELECT * FROM products").then( data => data.forEach(item 
 					var total = howMany * price;
 					var newStock = stock - howMany;
 
-					connection.queryAsync("UPDATE products SET stock_qty = " + newStock + " WHERE item_id = " + whatNumber)
+					connection.queryAsync("UPDATE products SET stock_qty = ? WHERE item_id = ?", [newStock, whatNumber])
 					.then( () => { 
 						console.log(`Purchase completed.  Your total is ${total} dollars.`)
 						connection.end();
