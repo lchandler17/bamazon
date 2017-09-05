@@ -1,6 +1,6 @@
 # Bamazon
 
-One Paragraph of project description goes here
+Node application that allows the user to either "purchase" an item as a customer, or manage inventory as a manager.
 
 ### Prerequisites
 
